@@ -7,7 +7,7 @@ on:
   pull_request:
     branches:
       - main
-  workflow_dispatch: # 👈 This enables the "Run workflow" button
+  workflow_dispatch: # Enables manual trigger
 
 jobs:
   build:
@@ -22,9 +22,29 @@ jobs:
         sudo apt update
         sudo apt install -y cmake g++ libpcl-dev libboost-all-dev
 
-    - name: Build Project
+    - name: Configure Build
       run: |
         mkdir -p build
         cd build
-        cmake -DCMAKE_BUILD_TYPE=Release ..
+        cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_RUNTIME_OUTPUT_DIRECTORY=bin ..
+
+    - name: Build Project
+      run: |
+        cd build
         make -j$(nproc)
+
+    - name: List Build Directory
+      run: |
+        echo "Listing build output..."
+        ls -R build/bin
+
+    - name: Run Executable (Optional)
+      run: |
+        echo "Running executable to confirm it's functional..."
+        ./build/bin/ETH3DMultiViewEvaluation || echo "Execution failed"
+
+    - name: Upload Build Artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: ETH3DMultiViewEvaluation
+        path: build/bin/ETH3DMultiViewEvaluation
