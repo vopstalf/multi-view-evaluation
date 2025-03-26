@@ -44,7 +44,7 @@ jobs:
         ./build/bin/ETH3DMultiViewEvaluation || echo "Execution failed"
 
     - name: Upload Build Artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v3.1.2
       with:
         name: ETH3DMultiViewEvaluation
         path: build/bin/ETH3DMultiViewEvaluation
