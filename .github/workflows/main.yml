@@ -3,10 +3,10 @@ name: Build ETH3D Multi-View Evaluation
 on:
   push:
     branches:
-      - main
+      - master
   pull_request:
     branches:
-      - main
+      - master
   workflow_dispatch: # Enables manual trigger
 
 jobs:
