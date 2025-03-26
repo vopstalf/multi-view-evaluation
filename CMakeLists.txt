@@ -1,11 +1,15 @@
+cmake_minimum_required(VERSION 3.16)
 project(ETH3DMultiViewEvaluation)
-cmake_minimum_required(VERSION 2.8)
 
 set(CMAKE_CXX_STANDARD 17)
-
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake)
 
-# External dependency: boost filesystem
+# Set policies
+if(POLICY CMP0167)
+    cmake_policy(SET CMP0167 NEW)
+endif()
+
+# External dependency: Boost filesystem
 find_package(Boost COMPONENTS filesystem system REQUIRED)
 include_directories(${Boost_INCLUDE_DIRS})
 link_directories(${Boost_LIBRARY_DIRS})
@@ -27,21 +31,19 @@ if (OPENMP_FOUND)
   set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
 endif()
 
-# Settings.
+# Settings
 if(NOT CMAKE_BUILD_TYPE)
   message(STATUS "Build type not specified, using RelWithDebInfo")
   set(CMAKE_BUILD_TYPE RelWithDebInfo)
 endif()
 
 if(NOT "${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
-    add_definitions("-O2 -msse2 -msse3 -std=c++11")
+    add_definitions("-O2 -msse2 -msse3")
 endif()
 
-include_directories(
-    ./src
-)
+include_directories(./src)
 
-# Evaluation executable.
+# Evaluation executable
 add_executable(ETH3DMultiViewEvaluation
     src/accuracy.cc
     src/accuracy.h
@@ -54,6 +56,7 @@ add_executable(ETH3DMultiViewEvaluation
     src/tinyxml2.h
     src/util.h
 )
+
 target_link_libraries(ETH3DMultiViewEvaluation
     ${PCL_LIBRARIES}
     ${Boost_LIBRARIES}
