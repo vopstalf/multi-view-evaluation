@@ -33,18 +33,12 @@ jobs:
         cd build
         make -j$(nproc)
 
-    - name: List Build Directory
+    - name: List Build Output
       run: |
         echo "Listing build output..."
         ls -R build/bin
 
     - name: Run Executable (Optional)
       run: |
-        echo "Running executable to confirm it's functional..."
+        echo "Running the built executable..."
         ./build/bin/ETH3DMultiViewEvaluation || echo "Execution failed"
-
-    - name: Upload Build Artifact
-      uses: actions/upload-artifact@v3.1.2
-      with:
-        name: ETH3DMultiViewEvaluation
-        path: build/bin/ETH3DMultiViewEvaluation
